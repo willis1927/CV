@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="center" >
+        <h2>Login</h2>
+        
+        {% if message %}
+            <div>{{ message }}</div>
+        {% endif %}
+
+        <div class="container text-center"> 
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username" class="sr-only">Username :</label>
+                    <input autofocus class="input-sm" type="text" name="username" placeholder="Username">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="password" class="sr-only">Password :</label>
+                    <input class="input-sm" type="password" name="password" placeholder="Password">
+                </div>
+                <br>
+                <input class="button" type="submit" value="Login" style="margin:5px">
+            </form>
+        </div>  
+        
+        <div>
+        <p>Don't have an account? </p>  <a href="{% url 'register' %}">Register here.</a>
+        </div>            
+        
+        
+        
+        
+    </div> 
+{% endblock %}

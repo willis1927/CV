@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+{% block title %}
+Campsite Hunter - {{site.name}}
+{% endblock %}
+
+{% block body %}
+{% if site.owner == user %}
+<div class="center" style = "margin-top: 1rem;">
+<div  class ="center" style="text-align: center; display: inline;"><input id = "addPlot" class="button" type="submit" value="Add Plot" style="margin:10px"> </div>
+<div  class ="center" style="text-align: center; display: inline;"><a  href="../view_bookings/{{site.id}}"><input id = "bookings" class="button" type="submit" value="View Bookings" style="margin:10px"></a> </div>
+<div  class ="center" style="text-align: center; display: inline;"><input id = "siteView" class="button" type="submit" value="Site View" style="margin:10px" hidden> </div>
+<div  class ="center" style="text-align: center; display: inline;"><input id = "delete" class="button" type="submit" value="Delete Plot" style="margin:10px"> </div>
+<div  class ="center" style="text-align: center; display: inline;"><input id = "cancel" class="button" type="submit" value="Cancel" style="margin:10px" hidden> </div>
+{% endif %}
+
+</div>
+<div class = "admin" id="site-view" >
+    
+        <div class="center">
+           
+            <div style="margin:15px auto 20px auto; width: 45%;"><img src="{{site.picture}}" alt="image of campsite" style = "width: 100%; height:100%; object-fit:cover"></div>
+            <h1>{{site.name}}</h1>
+            <a style= "text-align:center;" href="tel:{{site.phone}}">{{site.phone}}</a><br>
+            <a style= "text-align:center;"href="mailto:{{site.email}}">{{site.email}}</a>
+            <h6>{{site.address1}}</h6>
+            <h6>{{site.address2}}</h6>
+            <h6>{{site.town}}</h6>
+            <h6>{{site.postcode}}</h6>
+            <h5>Description</h5>
+            <h4>{{site.description}}</h4>
+            <ul class="facility-ul">
+            {% for facility in facilities %}
+                <li>{{facility.name}}</li>
+            {% endfor %}
+            </ul>
+            <h2>Plots</h2>
+            
+        </div>  
+        {% for plot in plots %}
+        <form id = "Form-{{plot.id}}" method="post" action="delete/{{plot.id}}">
+            {% csrf_token %}
+            <div class ="center" style="width:45%; border:2px solid black; margin:20px auto; padding:10px">
+        
+        <H2> {{plot.name}} </H2>
+        <ul>
+        <li>Plot Type  -  {{plot.type}}</li> 
+        <li>
+           {% if plot.power %}
+                Powered
+            {% else %}
+                Unpowered
+            {% endif %}          
+        </li>
+        <li>Max Capacity -  {{plot.capacity}} people</li>
+        <li>Size -  {{plot.length}}m x {{plot.width}}m</li>
+        <li>Price -  £{{plot.price}} per night</li>
+        <a href="{% url 'book' type='plot' id=plot.id %}" class="button bookings">Book</a>
+        </ul> 
+        <input id = "delete-{{plot.id}}" class="button-red" type="submit" value="Delete" onclick="delete_plot('{{plot.id}}')" style="background-color: crimson; border: none;
+        color: bisque;
+        padding: .75rem 1rem;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1rem;
+        border-radius: 15px;"hidden> 
+        </div>
+        </form>
+        {% endfor %}
+        
+</div>
+<div class = "admin" id="add-view" style="display:none">
+    <form id = "plotForm" method="post" action="{% url 'add_plot' %}">
+        {% csrf_token %}
+        
+        <input name="id" id="id"value="{{site.id}}" hidden>
+        <label for="name">Plot name: <input id="name" name="name" type="text" autofocus required></label>
+        <label for="type">Plot Type: <select id="type" name="type" required>
+            {% for type in types%}
+            <option value="{{type}}">{{type}}</option>
+            {% endfor %}
+        </select></label>   
+        
+        <fieldset>
+            <legend>Powered?</legend>
+            <label for="power" >Unpowered <input style = "width:15px" id="unpowered" name="power" type="radio" value="False"  checked></label>
+            <label for="power" >Powered <input style = "width:15px" id="powered" name="power" type="radio" value="True" > </label>
+        </fieldset>
+        
+        <label for="capacity">Max People: <input id="capacity" name="capacity" type="number" min="1" required></label>
+        <label for="length">Length (metres): <input id="length" name="length" type="number" min="1" required></label>
+        <label for="width">Width (metres): <input id="width" name="width" type="width" min="1"required></label>
+        <label for="price">Price per night (£): <input id="price" name="price" type="number" min="1" required></label>
+        <input id = "addPlotButton" class="button" type="submit" value="Add" style="margin:20px">
+    </form>
+    
+</div>        
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('#addPlot').addEventListener('click', () => load_add_plot());
+    document.querySelector('#siteView').addEventListener('click', () => load_site());
+    document.querySelector('#delete').addEventListener('click', () => delete_buttons());
+    document.querySelector('#cancel').addEventListener('click', () => cancel());
+    
+    });
+    
+    
+    function load_site(){
+      document.querySelector(`#add-view`).style.display = 'none';
+      document.querySelector(`#site-view`).style.display = 'initial';
+      document.getElementById('addPlot').removeAttribute("hidden");
+      document.getElementById('delete').removeAttribute("hidden");
+      document.getElementById('bookings').removeAttribute("hidden");
+      document.getElementById('siteView').setAttribute("hidden",true);;
+     
+   
+    }
+    
+    function load_add_plot(){
+      
+      document.querySelector(`#add-view`).style.display = 'initial';
+      document.querySelector(`#site-view`).style.display = 'none';
+      document.getElementById('addPlot').setAttribute("hidden",true);
+      document.getElementById('delete').setAttribute("hidden",true);
+      document.getElementById('bookings').setAttribute("hidden",true);
+      document.getElementById('siteView').removeAttribute("hidden");
+      document.getElementById("plotForm").reset();
+      
+    }
+    function delete_buttons(){ 
+       
+        btns = document.querySelectorAll('.button-red');        
+        btns.forEach((btn) => {
+            btn.removeAttribute("hidden");
+        });
+        document.getElementById('delete').setAttribute("hidden",true);
+        document.getElementById('cancel').removeAttribute("hidden");
+
+        
+    }
+    function cancel(){
+        btns = document.querySelectorAll('.button-red');        
+        btns.forEach((btn) => {
+            btn.setAttribute("hidden",true);
+        });
+        document.getElementById('delete').removeAttribute("hidden");
+        document.getElementById('cancel').setAttribute("hidden",true);
+    }
+
+    function delete_plot (id) {
+        event.preventDefault();
+        var check = confirm('Are you sure you want to delete this plot?');
+        console.log(check)
+        console.log(id)
+        if (check == true){
+            document.getElementById(`Form-${id}`).submit(); 
+        }
+        else{
+            cancel();
+        }
+        
+    };
+    </script>
+{% endblock %}

@@ -1,0 +1,216 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+    
+        
+    
+{% if user.is_authenticated %} 
+    <!-- Check if user is a camper or campsite-->
+    
+    {% if camper %}
+        
+        <div id = "camp_error" class = "center"><h3> <strong style="color: red;"> You are logged in as a camper, please log out and log in with a campsite account to manage campsites</strong></h3></div>
+
+    {% else %}
+    <div class="center" style="text-align: center; margin-top: 0px;">
+        <div  class ="center" style="text-align: center; display: inline;"><input id = "allSites" class="button" type="submit" value="All Sites" style="margin:10px"> </div>
+        <div  class ="center" style="text-align: center; display: inline;"><input id = "add" class="button" type="submit" value="Add Site" style="margin:10px"> </div>
+        <!--<div  class ="center" style="text-align: center; display: inline;"><input id = "manage" class="button" type="submit" value="Manage" style="margin:10px"> </div>-->
+    </div>
+    <div class = "admin" id="menu-view" >
+    
+        {% for site in campsites %}
+        <div class = "grid-container"> 
+            <div class="grid-item-header">
+                <h1>{{site.name}}</h1>
+            </div>
+            <div class="grid-item-image">
+                <img src="{{site.picture}}" alt="image of campsite" style = "width: 100%; height:100%; object-fit:cover">
+            </div>
+            <div class="grid-item-description">
+                
+                <h6>{{site.address1}}</h6>
+                <h6>{{site.address2}}</h6>
+                <h6>{{site.town}}</h6>
+                <h6>{{site.postcode}}</h6>
+                <h4>{{site.description}}</h4>
+                <div style="margin:auto;text-align: center;">
+                    <a style= "text-align:center;" href="tel:{{site.phone}}">{{site.phone}}</a> <a style= "text-align:center;"href="mailto:{{site.email}}">{{site.email}}</a>
+                </div>
+                
+            </div>  
+            <div class="grid-item-links">
+                <div class="flex-container">
+                    <a href="site/{{site.id}}" id = "view" class="button site"  >View Site</a>
+                    <a href="view_bookings/{{site.id}}" id = "bookings" class="button bookings"  >View Bookings</a>
+                    <a onclick="close_site('{{site.id}}')" id = "close" class="button site"  >Close Site</a>
+
+                </div>
+            </div>
+        </div>   
+        
+        {% endfor %}
+    </div>
+    <div class = "admin" id="add-view" style="display:none">
+        
+        <form class="form-inline" id ="add-form" action="{% url 'add_campsite' %}" method="post">
+            {% csrf_token %}
+            <table class = "center" id="add-table" style=" width: 55vw; max-width: 762px; " >
+            <div class="container">
+                    <input  hidden id="owner" type="text" name="owner" value="{{ request.user.username }}">
+                    <tr>
+                        <img id = "campsite_img" style="display: block; margin: 0 auto;" src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" height="150" >
+                    </tr>
+                    <tr >
+                        <td><label for="name" >Campsite Name :</label></td>
+                        <td><input  autofocus class="input-sm" id="name" type="text" name="name" placeholder="Campsite Name" size="50" required></td>               
+                    </tr>   
+                    <tr >
+                        <td><label for="description" >Description :</label></td>
+                        <td><textarea style = "resize: none;"  class="input-sm" id="description" maxlength="300" cols="76" rows="6" name="description" placeholder="Campsite description" required></textarea></td>
+                        
+                    </tr>
+                    <tr >
+                        <td  ><label for="picture" >Campsite picture :</label></td>
+                        <td  ><input   class="input-sm" id="picture" type="url" name="picture" onfocusout="updateImage()" placeholder="image url" size="75"></td>               
+                        
+                    </tr>     
+                    <tr>
+                        <td><label for="address1" >Address line 1 :</label></td>
+                        <td><input  class="input-sm" id="" type="text" name="address1" placeholder="Address Line 1" size ="50" required></td>               
+                    </tr>     
+                    <tr>
+                        <td><label for="address2" >Address line 2 :</label></td>
+                        <td><input   class="input-sm" id="address2" type="text" name="address2" placeholder="Address line 2" size = "50"></td>               
+                    </tr>     
+                    <tr>
+                        <td><label for="town" >Town :</label></td>
+                        <td><input   class="input-sm" id="town" type="text" name="town" placeholder="Town" size="30" required></td>               
+                    </tr>     
+                    <tr>
+                        <td><label for="county" >County :</label></td>
+                        <td><input   class="input-sm" id="county" type="text" name="county" placeholder="County" size="30"></td>               
+                    </tr>     
+                    <tr>
+                        <td><label for="postcode" >Postcode :</label></td>
+                        <td><input   class="input-sm" id="postcode" type="text" name="postcode" placeholder="Postcode" size="9" required></td>               
+                    </tr>     
+                    <tr>
+                        <td><label for="email" >Email :</label></td>
+                        <td><input   class="input-sm" id="email" type="email" name="email" placeholder="camp@site.com" required></td>               
+                    </tr>     
+                    <tr>
+                        <td><label for="Phone" >Phone :</label></td>
+                        <td><input autocomplete="off" class="input-sm" id= "phone"  type="tel" name="phone" pattern="[0-9]{11}" placeholder="11111222333" required></td>               
+                    </tr>     
+                    <tr>
+                        <td colspan = "2" style=" padding: .5rem; ">
+                            <div class="container" id="facilities_list" style="  display: flex; flex-wrap: wrap;">
+                            <legend>Facilities:</legend>  
+                            
+                            {% for facility in facilities %}
+                            
+                            <div style="width: 8rem;">
+                                <label ><input style="width: 8rem;"type="checkbox" value = "{{facility.name}}" name="facility_list">{{facility.name}}</label>
+                            </div>    
+                             
+                             {% endfor %}
+                           
+                            </div>  
+                                <input default="default" type ="text" id="new_facility"><button type="button" class="button" id="add-facility-button" style=" padding: 3px 10px; margin-left: .5rem;">Add Facility</button>
+                            </div>
+
+                        </td>               
+                    </tr>                                  
+                
+                
+                
+        </form>
+            <tr> 
+            </table>
+            <div  class ="center" style="text-align: center;"><input id = "register-button" class="button" type="submit" value="Register " style="margin:10px" > </div>
+    </div>
+    <div class = "admin" id="manage-view" style="display:none">
+        Manage View
+    </div>
+        
+
+        
+
+    {% endif %}
+
+{% endif %}
+<script>
+
+    document.querySelector('#allSites').addEventListener('click', () => load_menu());
+    document.querySelector('#add').addEventListener('click', () => load_add());
+    document.querySelector('#add-facility-button').addEventListener('click', () => add_facility());
+    //document.querySelector('#manage').addEventListener('click', () => load_manage());
+    
+    // By default, 
+    load_menu();
+  
+  
+  
+  
+  function load_menu(){ 
+   
+    document.querySelector(`#menu-view`).style.display = 'initial';
+    document.querySelector(`#add-view`).style.display = 'none';
+    document.querySelector(`#manage-view`).style.display = 'none';
+  }
+  function load_add(){
+   
+    document.querySelector(`#add-view`).style.display = 'initial';
+    document.querySelector(`#menu-view`).style.display = 'none';
+    document.querySelector(`#manage-view`).style.display = 'none';
+    document.getElementById("add-form").reset();
+  }
+  function load_manage(){
+   
+    document.querySelector(`#manage-view`).style.display = 'initial';
+    document.querySelector(`#menu-view`).style.display = 'none';
+    document.querySelector(`#add-view`).style.display = 'none';
+  }
+
+  function close_site (id) {
+        
+        var check = confirm('Are you sure you want to close this site? All bookings and plots will also be deleted');
+        if (check == true){
+            let text = `closesite/${id}`;
+            window.location.replace(text);           
+        }
+    }
+  
+    function add_facility(){
+        let csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        let name = document.getElementById('new_facility').value
+        let facility = {name: name}
+        console.log(name);
+        fetch('/facility', {
+            method: 'POST',
+            headers: {
+            'Content-type':"application/json",
+            'X-CSRFToken': csrfToken,
+        },
+            body: JSON.stringify(facility)
+        })
+        .then(response => response.json())
+        .then(result => {
+            
+            if(result["message"] == "Facility added!"){
+                document.getElementById('facilities_list').innerHTML += '<div style="width: 8rem;"><label ><input style="width: 8rem;"type="checkbox" value = "' + name + '" name="facility_list">' + name + '</label></div>';
+            }
+            else{
+                alert("Facility already exists!")
+            }
+        })
+
+        
+        document.getElementById('new_facility').value = "";
+    } 
+  </script>
+
+{% endblock %}

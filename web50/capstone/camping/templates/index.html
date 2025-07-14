@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+
+    
+        
+    
+
+    <!-- Check if user is a camper or campsite-->
+    
+    {% if search %}
+    <h3 class="canter">{{search}}</h3>
+
+    {% endif %}
+    {% for site in campsites %}
+    <div class = "grid-container"> 
+        <div class="grid-item-header">
+            <h1>{{site.name}} </h1>
+        </div>
+        <div class="grid-item-image">
+            <img src="{{site.picture}}" alt="image of campsite" style = "width: 100%; height:100%; object-fit:cover">
+        </div>
+        <div class="grid-item-description">
+            {% if site.distance %}
+                <h4>{{site.distance|floatformat:2}}km away</h4>
+                <h3> Plots available</h3>
+                <ul class = "no-bullets">
+                    {% for key, value in plots.items %}
+                        
+                            {% if key == site.name %}     
+                                {% for p in value %}
+                                    <li>{{p}}</li>
+                                {% endfor %}
+                            {% endif %}   
+                    {% endfor %}    
+                        
+                    
+                </ul>
+                    
+                
+                    
+            {% endif %}
+            <h6>{{site.address1}}</h6>
+            <h6>{{site.address2}}</h6>
+            <h6>{{site.town}}</h6>
+            <h6>{{site.postcode}}</h6>
+            <h4>{{site.description}}</h4>
+            <div style="margin:auto;text-align: center;">
+                <a style= "text-align:center; font-size: 1.5rem; overflow-wrap: break-word;" href="tel:{{site.phone}}">{{site.phone}}</a><br>
+                <a style= "text-align:center; font-size: 1.5rem; overflow-wrap: break-word;"href="mailto:{{site.email}}">{{site.email}}</a>
+            </div>
+            <h6>Owner - {{site.owner}}</h6>
+        </div>  
+        <div class="grid-item-links">
+            
+                <a href="site/{{site.id}}" id = "view" class="button site"  >View Site</a>
+            {% if user.is_authenticated %} 
+             
+                
+                {% if user == site.owner %}   
+                    <a id = "bookings" href="view_bookings/{{site.id}}" class="button site"  >View Bookings</a>
+                    <a onclick="close_site('{{site.id}}')" id = "close" class="button site"  >Close Site</a>
+                {% else %}
+                    <a href="{% url 'book' type='site' id=site.id %}" class="button bookings">Book</a>
+
+                {% endif %}
+            {% endif %}   
+
+            
+        </div>
+    </div>   
+                
+    {% endfor %}
+    <script>
+
+        function close_site (id) {
+                
+                var check = confirm('Are you sure you want to close this site? All bookings and plots will also be deleted');
+                if (check == true){
+                    let text = `closesite/${id}`;
+                    window.location.replace(text);           
+                }
+            }
+        </script>
+{% endblock %}

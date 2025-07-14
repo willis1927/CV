@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+
+    
+        
+    
+
+
+    
+    
+            {% if user.is_authenticated %} 
+                {% if bookings %}
+                    <div class="center"><h2 style ="color:red" >The plot is currently booked on this date, see below for booking dates - </h2>
+                        <ul>
+                            {% for booking in bookings %}
+                                <li>{{booking.arrival}} until {{booking.checkout}} by userid - {{booking.user_id}} </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                
+                {% if user != site.owner %}   
+                <div class="center">
+                    <form id ="booking-form" action="{% url 'book' type='booking' id=site.id %}" method="post">
+                        {% csrf_token %}
+                        <h2> {{site.name}}</h2>
+                        
+                        <h1>{{plot}}</h1>
+                        <select name="plot" id="plot">
+                            {% for plot in plots %}
+                                {% if selection == plot %}  
+                                    <option value="{{plot.id}}" selected>{{plot.name}}</option>
+                                {% else %}
+                                <option value="{{plot.id}}" >{{plot.name}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        
+                        
+                        <label for="checkin">Arrive</label><input type="date" name="checkin" id="checkin" autofocus>
+                        <label for="checkin">Depart</label><input type="date" name="checkout" id="checkout">
+                        <!-- TO DO  set max to plot capacity-->
+                        <label for="people">People</label><input type="number" name="people" id="people" placeholder="1" value="1" min="1" max="10">
+                        <h1>{{plot.capacity}}</h1>
+                        <label for="notes">Notes</label><textarea style = "resize: none;width:90%;"  id="notes" maxlength="300" cols="76" rows="6" name="notes" placeholder="Booking Notes"></textarea>
+                        <br><input id = "book-button" class="button" type="submit" value="Book ">  
+                    </form>
+                {% else %}
+                <div id = "camp_error" class = "center">
+                    <h3> <strong style="color: red;"> You are this sites owner, please log in with another account to make a booking for this site/plot</strong></h3>
+                </div>
+                {% endif %}
+            {% endif %}   
+
+                </div>
+        
+                
+   
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+  
+    
+            {% if user.is_authenticated %} 
+               
+                {% if message %}
+                    <h2 class="center">{{message}}</h2>
+                {% endif %}
+
+                <form id = "plotForm" method="post" action="{% url 'accountadmin' %}">
+                    {% csrf_token %}
+                    <h1 class="center">Username - {{user}}</h1>
+                    <input name="id" id="id"value="{{user.id}}" hidden>
+                    <label for="first_name">First name: <input id="first_name" name="first_name" type="text" value="{{user.first_name}}" autofocus required></label>
+                    <label for="last_name">Last name: <input id="last_name" name="last_name" type="text" value="{{user.last_name}}" autofocus required></label>              
+                    <label for="email">Email: <input id="email" name="email" type="email" value="{{user.email}}" required></label>
+                    <label for="phone">Phone: <input id="phone" name="phone" type="tel" pattern="[0-9]{11}" value="{{user.phone}}" required></label>
+                    <h4>Dob - {{user.dob}}</h4>
+                    <input id = "update" class="button" type="submit" value="Update" style="margin:20px">
+                </form>
+                <div class="center">
+                <form id="PasswordForm" method="post" action="{% url 'updatepassword' %}">
+                    {% csrf_token %}
+                    <input name="username" id="username"value="{{user.username}}" hidden>
+                    <label for="old">Old Password: <input  id="old" name="old" type="password"></label>
+                    <label for="new1">New Password: <input id="new1" name="new1" type="password" onkeyup="validate_change()"></label>
+                    <label for="new2">Repeat New Password: <input id="new2" name="new2" type="password" onkeyup="validate_change()"></label> <h7 id="message"> Passwords must match!</h7><br>
+                    <input  id = "pwupdate" class="disabled-button" type="submit" value="Change Password" style="margin:20px" disabled>
+                </form>
+            </div>
+            {% endif %}
+            <script>
+                 
+                 function validate_change(){ 
+
+                    let new1 = document.getElementById('new1').value;
+                    let new2 = document.getElementById('new2').value;
+                    
+                    if (new1 === new2 && new1 != "")
+                    {
+                        
+                        document.getElementById('pwupdate').classList.remove("disabled-button")
+                        document.getElementById('pwupdate').classList.add("enabled-button")
+                        document.getElementById('message').hidden = true;
+                        document.getElementById('pwupdate').disabled = false;
+
+                      
+                    }else {
+                        document.getElementById('pwupdate').classList.remove("enabled-button")
+                        document.getElementById('pwupdate').classList.add("disabled-button")
+                        document.getElementById('message').hidden = false;
+                        document.getElementById('pwupdate').disabled = true;
+                                           
+                    }
+                }
+
+
+            </script>
+
+      
+                
+   
+
+{% endblock %}

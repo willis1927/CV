@@ -1,0 +1,302 @@
+* {
+    box-sizing: border-box;
+  }
+  
+.header{
+    background-color:darkslategray;
+    color: bisque;
+    padding: 10px;
+    margin: 0;
+    border-style: solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-color:bisque;
+    border-width: 1px;
+    width:100%;
+    text-align: center;
+}
+
+.nav-container {
+  background-color: darkslategray;
+  overflow: hidden;
+  
+}
+
+.flex{
+  display: flex;
+  justify-content: space-between;
+}
+.nav-container a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  
+}
+
+.nav-container a:hover {
+  background-color: #88744c;
+    color: black;
+
+}
+
+.nav-container a.active {
+  background-color: #1cb14e;
+  color: white;
+}
+
+.nav-container .icon {
+  display: none;
+}
+
+
+.button:hover {
+  background-color: #88744c;
+    color: black;
+    cursor: pointer;
+  }
+
+  
+
+.button {
+    background-color: darkslategray;
+    border: none;
+    color: bisque;
+    padding: .75rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    border-radius: 15px;
+  
+
+
+}
+
+body{
+    background-color: bisque !important;
+}
+
+.center {
+    margin-top: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    
+}
+/* The popup form - hidden by default */
+
+.contacts{
+  align-self: center;
+}
+
+ #search {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+    
+  }
+
+  .flex-container{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  
+ 
+      
+  
+  /* When the screen is less than 650 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the nav-container (.icon) */
+@media screen and (max-width: 650px) {
+      .nav-container a:not(:first-child) {display: none;}
+      .nav-container a.icon {
+        float: right;
+        display: block;}
+      
+
+      #close.button.site , #bookings.button.site, #view.button.site, .bookings{
+        
+        font-size: .9rem !important;
+        padding:.5rem !important;
+        margin-bottom: .4rem;
+      }
+      
+      .grid-item-links {
+        padding: .75rem !important;
+        height: 4rem !important;
+        overflow: scroll;
+        
+      }
+      .grid-item-image, .grid-item-description {
+        
+        grid-column: 1/ span 3 !important;
+    }
+
+  }
+  
+/* The "responsive" class is added to the nav-container with JavaScript when the user clicks on the icon. This class makes the nav-container look good on small screens (display the links vertically instead of horizontally) */
+@media screen and (max-width: 650px) {
+  .nav-container.responsive {position: relative;}
+  .nav-container.responsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .nav-container.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+    
+    
+
+    
+
+    #camp_error{
+        border:3px solid darkslategray;
+        margin: 10px;
+        padding: 4px;
+        text-align: center;
+      
+      }
+
+      .grid-container {
+        width: 75%;
+        display: grid;
+        margin: 0 auto 2rem auto;
+        grid-template-columns: 25% auto;
+        grid-template-rows: 4rem 18rem 4rem;     
+        background-color: rgba(47, 79, 79, 0.589);
+        border-radius: 20px; 
+      }
+      .grid-item-header {
+        grid-column: 1/ span 3;
+                  
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        padding: .4rem;
+        font-size: 1rem;
+        text-align: center;
+        
+      }
+
+      
+      .grid-item-image {
+        border: 1px solid rgba(0, 0, 0, 0.8);
+        grid-column: 1/1;
+        grid-row: 2/3;
+        text-align: left;
+      }
+              
+      
+      .grid-item-description {
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        font-size: 30px;
+        text-align: center;
+        grid-column: 2/span 2;
+        grid-row: 2/3;
+        overflow: scroll;
+        overflow-x: hidden;
+      }
+      .grid-item-links {
+        grid-column: 1/4;
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(0, 0, 0, 0.8);
+        padding-top: .5rem;
+        height: 4rem;
+        
+        text-align: center;
+        grid-column: 1/4;
+        grid-row: 3/4;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        align-items: center;
+      }
+      ul.facility-ul{
+        list-style-type: square;
+        list-style-position: inside;
+      }
+      
+      #plotForm {
+        width: 60vw;
+        max-width: 500px;
+        min-width: 300px;
+        
+        margin: 0 auto;
+        
+      }
+
+     
+      #powered, #unpowered{
+        width:5px;
+      }
+      #plotForm :is(input, textarea, select,option){
+        width: 55vw;
+        margin:  10px 0 0 0;
+        max-width: 450px;
+      }
+
+      #add-form :is(input, textarea, select,option){
+        width: 55vw;
+        margin:  10px 0 0 0;
+        max-width: 300px;
+      }
+      label{
+        margin-top: 10px;
+        display: block;
+      }
+      fieldset{
+        margin-top: 20px;
+        
+      }
+      #add-table{
+        width: 762px;
+        
+        max-width: 250px; 
+      }
+      ul.no-bullets{
+        list-style-type: none; 
+        padding: 0; 
+        margin: 0; 
+      }
+      .disabled-button{
+        display: none;
+        background-color: darkslategray;
+        border: none;
+        color: bisque;
+        padding: .75rem 1rem;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1rem;
+        border-radius: 15px;
+      }
+      .enabled-button{
+        display: block;
+        background-color: darkslategray;
+        border: none;
+        color: bisque;
+        padding: .75rem 1rem;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1rem;
+        border-radius: 15px;
+      }
+      div.sumamry table, div.sumamry th,div.sumamry td,div.sumamry tr {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 5px;
+      } 

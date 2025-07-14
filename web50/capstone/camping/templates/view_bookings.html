@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+
+<div class ="sumamry">
+<table class = "center" width ="95%">
+    <h1 class = "center"> {{site.name}} Bookings</h1>
+    <tr>
+        <th>Plot</th>
+        <th>Arrival</th>
+        <th>Departure</th>
+        <th>User</th>
+        <th>Pax</th>
+        <th>Notes</th>
+    </tr>
+    {% for booking in bookings %}
+        <tr>
+            <td>{{booking.plot.name}}</td>
+            <td>{{booking.arrival}}</td>
+            <td>{{booking.checkout}}</td>
+            <td>{{booking.user}}</td>
+            <td>{{booking.people}}</td>
+            <td>{{booking.notes}}</td>
+        </tr>
+    {% endfor%}
+
+</table>
+</div>
+
+{% endblock %}

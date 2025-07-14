@@ -1,0 +1,188 @@
+* {
+  box-sizing: border-box;
+}
+
+#PageHeader{
+    background-color:darkslategray;
+    color: bisque;
+    padding: 10px;
+    margin: 0;
+    border-style: solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-color: bisque;
+    width:100%;
+}
+
+
+body{
+    background-color: bisque !important;
+}
+
+
+.bg-custom{
+    background-color:darkslategray;
+    color: bisque;
+    margin: 0;
+}
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text 
+{
+    color: bisque;
+}
+
+
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+
+h1, h2, #register{
+    text-align: center;
+    margin:20px;
+}
+    
+  }
+  .topnav {
+    background-color: darkslategray;
+    overflow: hidden;
+    width: 100%;
+  }
+/* Style the links inside the navigation bar */
+.topnav a, #search {
+    
+    display: block;
+    color: bisque;
+    text-align: left;
+    padding: 20px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .left-link{
+    float: left;
+  }
+  .right-link{
+    float: right;
+  }
+  .topnav a:hover, #search:hover, .button:hover {
+    background-color: #88744c;
+    color: black;
+  }
+  .topnav a.active {
+    background-color: #1cb14e;
+    color: white;
+  }
+  
+  .topnav .icon {
+    display: none;
+  }
+
+  /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+@media screen and (max-width: 600px) {
+    .topnav a:not(:first-child) {display: none;}
+    .topnav a.icon {
+      float: right;
+      display: block;
+    }
+  }
+  
+  /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+  @media screen and (max-width: 600px) {
+    .topnav.responsive {position: relative;}
+    .topnav.responsive a.icon {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    .topnav.responsive a {
+      
+      display: block;
+      text-align: left;
+    }
+    
+  }
+  .button{
+    background-color: darkslategray;
+    border: none;
+    color: bisque;
+    padding: 10px 28px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 15px;
+  }
+
+
+#camp_error{
+  border:3px solid darkslategray;
+  margin: 10px;
+  padding: 4px;
+  text-align: center;
+
+}
+
+ul {
+  list-style-type: none;
+}
+.grid-container {
+  width: 75%;
+  display: grid;
+  margin: 0 auto 2rem auto;
+  grid-template-columns: auto auto;
+  
+  background-color: rgba(47, 79, 79, 0.589);
+  border-radius: 20px; 
+  
+}
+.grid-item-header {
+  grid-column: 1/ span 3;
+  border: 1px solid black;
+  
+  padding: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  
+}
+.grid-item-description {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+  grid-column: 2/span 2;
+  grid-row: 2/3;
+}
+.grid-item-image {
+  background-color: rgba(30, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  height:200px;
+  grid-column: 1/1;
+  grid-row: 2/3;
+  text-align: left;
+}
+.grid-item-links {
+  grid-column: 1/4;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 2px;
+  height: 4rem;
+  text-align: center;
+  grid-column: 1/4;
+  grid-row: 3/4;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.admin{
+  background-color: orange;
+  width:85%;
+  height:auto;
+    
+  border: 3px solid black;
+}
+.flex-container{
+  display: flex;
+  justify-content: space-evenly;
+}
+
