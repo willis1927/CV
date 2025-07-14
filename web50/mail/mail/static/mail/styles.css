@@ -1,0 +1,15 @@
+textarea {
+    min-height: 400px;
+}
+
+#email {
+    font-size: x-large;
+    color:blue;
+    border: 2px solid black;
+    margin: 3px;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+}
+
+

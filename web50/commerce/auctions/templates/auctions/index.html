@@ -1,0 +1,47 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    
+    {% if category %}
+        <h2> {{ category }} active listings </h2>
+        <br>
+    {% else %}
+        <h2>All active listings</h2>
+
+    {% endif %}
+    
+    <div class="form-group">
+        <form action="{% url 'index' %}" method="post">
+            {% csrf_token %}
+            {{ categories }}   
+            <input class="btn btn-primary" type="submit" value="Select">
+            <a class="btn btn-primary" href="{% url 'index' %}"> Reset filter</a>            
+        </form>
+    </div>
+    {% if message %}
+    <div>
+        {% if success %}
+            <strong style="color: rgba(45, 137, 24, 0.91); font-size: 25px">
+        {% else%}
+            <strong style="color: rgb(255, 0, 0); font-size: 25px">
+        {% endif %}
+            {{ message }}</strong></div>
+    {% endif %} 
+                <br>
+    <div class="row">
+        {% for listing in listings %}
+        
+            <div class="card" style="width: 14rem;">
+                
+                    <img class="card-img-top" src="{{ listing.imageURL }}" alt="{{ listing.name }}">
+                
+                    <div class="card-body">
+                        <h5 class="card-title">{{ listing.name }}</h5>
+                        <p class="card-text">{{ listing.description }}</p>
+                        <p class="card-text">Current price - £{{ listing.price.bid }}</p>
+                        <a href="{% url 'listing' listing.listingID %}" class="btn btn-primary">View listing</a>
+                    </div>
+                </div>     
+        {% endfor %}
+    </div> 
+{% endblock %}

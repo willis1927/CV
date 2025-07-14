@@ -1,0 +1,86 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div>
+<h2>{{ listing.name }}</h2>
+    <h4>Owner - {{ listing.owner }}</h4>
+    
+    <img src="{{ listing.imageURL }}" width= "150"><br><br>
+    
+            
+
+    {% if isOwner  %}
+    <h3>Current price - £{{ listing.price.bid }}</h3>
+        <form action="{% url 'amend' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="listingID" value="{{ listing.listingID}}">
+            <label for="id_name">Listing Name : </label> {{ form.name }}<br>
+            <label for="id_description">Description : </label> {{ form.description}}<br>
+            <label for="id_category">Category : </label> {{ form.category}}<br>
+            <label for="id_imageURL">Image URL : </label> {{ form.imageURL}}<br>
+            <input class="btn btn-primary" type="submit" value="Submit changes">
+        </form><br>    
+        {% if listing.active %}
+                <form action = "{% url 'close' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="listingID" value="{{ listing.listingID}}">
+                    
+                    <input class="btn btn-danger" type="submit" value="Close auction">
+                </form>    
+        {% endif %}    
+    </div>     
+    {% else %}
+        {% if listing.active %}        
+            <ul>
+                <li>Current price: : £{{ listing.price.bid }}</li>
+                <li>Description : {{ listing.description}}</li>
+                <li>Category : {{ listing.category}}</li>
+                <li>Active : {{listing.active}}</li>  
+       
+            {% if user.is_authenticated %}
+                </ul>
+                <form action="{% url 'bid' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="listingID" value="{{ listing.listingID}}">
+                    <input type="text" name="bid" placeholder="bid in £">
+                    <input class="btn btn-success" type="submit" value="Place Bid">    
+                </form>
+                <br>    
+                {% if watched %}
+                    <form action = "{% url 'removewatch' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="listingID" value="{{ listing.listingID}}">
+                        <input class="btn btn-warning" type="submit" value="Remove from Watchlist">
+                    </form>        
+                {% else %}
+                    <form action="{% url 'watch' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="listingID" value="{{ listing.listingID}}">
+                        <input class="btn btn-info" type="submit" value="Watch Item">           
+                    </form>
+                {% endif %}
+            {% endif %}
+        {% elif isWinner %}
+            <H3> You won with a winning bid of £{{listing.price.bid}}!!</H3>
+        {% else %}
+            <h3>Auction closed </h3>    
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block comments %}
+<br><h2>Comments</h2>
+    <ul>
+        {% for comment in comments %}
+            <li> Comment by {{comment.user}} - {{ comment.time }}<br> {{ comment.text }}</li><hr style="height:2px;border-width:0px;color:gray;background-color:gray">
+        {% endfor %}
+    </ul>
+    {% if user.is_authenticated %}
+        <form action="{% url 'comment' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="listingID" value="{{ listing.listingID}}">
+            <textarea name="comment" placeholder="Enter Comment" rows="4" cols="100" aria-placeholder="Enter Comment"></textarea>
+            <br><input class="btn btn-info" type="submit" value="Add Comment">           
+        </form>
+    {% endif %}    
+{% endblock %}

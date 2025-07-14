@@ -1,0 +1,33 @@
+.center form{
+    border-radius: 25px;
+    margin: auto;
+    width: 45%;
+    border: none;
+    padding: 10px;
+    text-align: center;
+    }
+.nav_link {
+    width: 50%;
+    padding: 10px;
+    }
+label{
+    min-width: 167px;
+    width: 40%;
+}
+.submit{
+    border: 1px solid #3079ed;
+    color: #fff;
+    box-shadow: none;
+    background-color: #4d90fe;
+    border-radius: 12px;
+    padding:10px
+}
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+   }
+input[type=text]{
+    width: 40%;
+    border-radius:20px;
+}

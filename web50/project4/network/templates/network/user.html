@@ -1,0 +1,66 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<h1>{{ User }}</h1>
+<table   class="center">
+<tr>
+    <td><h2>Followers - <h2></td>
+    <td><h2 id = "Followers">{{followers}}<h2></td>
+    <td style="width:100px"></td>
+    <td><h2 >Following - <h2></td>
+    <td><h2 id = "Following">{{follows}}<h2></td>
+</tr>
+{% if User != user.username and user.is_authenticated %}
+<tr>
+    <td></td>
+    {% if followed %}
+        <td colspan="3"><a class="btn btn-primary" href="{% url 'unfollow' user_id=id %}"> Unfollow</a></td>
+    {% else %}    
+    <td colspan="3"><a class="btn btn-primary" href="{% url 'follow' user_id=id %}"> Follow</a></td>
+    {% endif %}    
+    <td> </td>
+</tr>
+{% endif %}
+</table>
+        {% for post in page_obj %}
+        <br>
+        
+        <div class="container">
+            <h5>User - <a href="{% url 'get_user' user_id=post.user_id %}">{{post.user}}</a> - {{post.time}}</h5>  
+                <h6 id = "{{post.id}}_h6">{{post.text}}</h6>
+                <p>Likes - 
+                    <strong id = "{{post.id}}_likes" >{{ post.likes.all.count }}</strong> 
+                </p> 
+
+                {% if user == post.user %}
+                <button id = "{{post.id}}_edit" class="btn btn-warning" onclick="edit_post('{{post.id}}','{{post.text}}')" margin = "5px" >Edit post</button>
+                <button id = "{{post.id}}_submit" class="btn btn-success" onclick="submit_edit('{{post.id}}',document.getElementById('{{post.id}}_text').value)" margin = "5px" hidden>Submit edit</button>
+                {% else %}
+                    {% if post.id in likes %}
+                    <button id = "{{post.id}}_unlike" class="btn btn-success" onclick="updateLikes('{{post.id}}','true')" margin = "5px" >Unlike</button>
+                    <button id = "{{post.id}}_like" class="btn btn-success" onclick="updateLikes('{{post.id}}','false' )" margin = "5px" hidden>Like</button>
+                    {% else %}
+                    <button id = "{{post.id}}_unlike" class="btn btn-success" onclick="updateLikes('{{post.id}}','true' )" margin = "5px" hidden >Unlike</button>
+                    <button id = "{{post.id}}_like" class="btn btn-success" onclick="updateLikes('{{post.id}}','false')" margin = "5px" >Like</button>
+                    {% endif %}
+                {% endif %}
+        </div>
+        {% endfor %}
+        <div class="pagination justify-content-center">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+    
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+    
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+{% endblock %}
