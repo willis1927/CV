@@ -1,2 +1,2 @@
 # PublicProjects
-A sample of projects I have built 
+A selection of projects and work I have created either as part of study or personal development.
