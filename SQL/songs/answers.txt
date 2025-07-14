@@ -1,0 +1,4 @@
+SELECT AVG(energy + valence + danceability) FROM songs;
+The audio aura for the provided list gives 1.85 which is just above the middle, as each charactaristic of the song carries equal weight this is not very accurate as it could see songs with high energy and low valence paired with wines with high valence and low energy.
+It might be better to add weighting to fields or add further calculations to how the score is generated so that it  matches similar style songs.
+
